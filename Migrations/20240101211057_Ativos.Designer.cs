@@ -3,6 +3,7 @@ using System;
 using CryptoTracker.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CryptoTracker.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240101211057_Ativos")]
+    partial class Ativos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,85 +100,15 @@ namespace CryptoTracker.API.Migrations
 
                     b.Property<string>("NomeAtivo")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Simbolo")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(25)");
 
                     b.HasKey("AssetID");
 
                     b.ToTable("Ativos");
-                });
-
-            modelBuilder.Entity("CryptoTracker.API.Models.Portfolio", b =>
-                {
-                    b.Property<int>("PortfolioID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("AssetID")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("QuantidadeTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<decimal>("ValorMedio")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("PortfolioID");
-
-                    b.HasIndex("AssetID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Portfolio");
-                });
-
-            modelBuilder.Entity("CryptoTracker.API.Models.Transacoes", b =>
-                {
-                    b.Property<int>("TransactionID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("AssetID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataTransacao")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("PortfolioID")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PrecoPorUnidade")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Quantidade")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Taxa")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<sbyte>("Tipo")
-                        .HasColumnType("tinyint");
-
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("TransactionID");
-
-                    b.HasIndex("AssetID");
-
-                    b.HasIndex("PortfolioID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Transacoes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -306,52 +239,6 @@ namespace CryptoTracker.API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CryptoTracker.API.Models.Portfolio", b =>
-                {
-                    b.HasOne("CryptoTracker.API.Models.Ativos", "AtivoCripto")
-                        .WithMany()
-                        .HasForeignKey("AssetID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CryptoTracker.API.Models.ApplicationUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AtivoCripto");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("CryptoTracker.API.Models.Transacoes", b =>
-                {
-                    b.HasOne("CryptoTracker.API.Models.Ativos", "Ativos")
-                        .WithMany()
-                        .HasForeignKey("AssetID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CryptoTracker.API.Models.Portfolio", "Portfolio")
-                        .WithMany("Transacoes")
-                        .HasForeignKey("PortfolioID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CryptoTracker.API.Models.ApplicationUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ativos");
-
-                    b.Navigation("Portfolio");
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -401,11 +288,6 @@ namespace CryptoTracker.API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CryptoTracker.API.Models.Portfolio", b =>
-                {
-                    b.Navigation("Transacoes");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,6 +7,9 @@ namespace CryptoTracker.API.Models
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         { }
+        public DbSet<Ativos>? Ativos { get; set; }
+        public DbSet<Transacoes>? Transacoes { get; set; }
+        public DbSet<Portfolio>? Portfolio { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
