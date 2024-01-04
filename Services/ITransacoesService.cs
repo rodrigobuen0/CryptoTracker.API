@@ -55,6 +55,7 @@ namespace CryptoTracker.API.Services
                 _context.Portfolio.Add(newPortfolio);
                 await _context.SaveChangesAsync();
                 transacao.PortfolioID = newPortfolio.PortfolioID;
+                portfolio = newPortfolio;
             }
             else
             {
