@@ -23,7 +23,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddStackExchangeRedisCache(redis =>
+{
+    redis.Configuration = configuration.GetConnectionString("cnRedis");
+});
+
 builder.Services.AddScoped<ITransacoesService, TransacoesService>();
+builder.Services.AddScoped<IPrecosService, PrecosService>();
+builder.Services.AddSingleton<ICacheService, CacheService>();
 
 // Entity Framework
 builder.Services.AddDbContext<AppDbContext>(options =>
