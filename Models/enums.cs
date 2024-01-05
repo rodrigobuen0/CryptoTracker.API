@@ -5,4 +5,10 @@
         Compra,
         Venda
     }
+
+    public enum MaiorMenor : sbyte
+    {
+        Maior,
+        Menor
+    }
 }

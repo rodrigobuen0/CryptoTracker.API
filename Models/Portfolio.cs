@@ -9,15 +9,15 @@ namespace CryptoTracker.API.Models
         public int PortfolioID { get; set; }
         public string UserID { get; set; }
         public int AssetID { get; set; }
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,10)")]
         public decimal QuantidadeTotal { get; set; }
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,10)")]
         public decimal ValorMedio { get; set; }
 
         [ForeignKey("UserID")]
         public ApplicationUser Usuario { get; set; }
         [ForeignKey("AssetID")]
         public Ativos AtivoCripto { get; set; }
-        public List<Transacoes> Transacoes { get; set; }
+        public List<Transacoes>? Transacoes { get; set; }
     }
 }

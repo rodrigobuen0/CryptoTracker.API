@@ -59,18 +59,6 @@ namespace CryptoTracker.API.Models
         [JsonProperty("date_added")]
         public DateTimeOffset DateAdded { get; set; }
 
-        [JsonProperty("tags")]
-        public string[] Tags { get; set; }
-
-        [JsonProperty("max_supply")]
-        public long? MaxSupply { get; set; }
-
-        [JsonProperty("circulating_supply")]
-        public double CirculatingSupply { get; set; }
-
-        [JsonProperty("total_supply")]
-        public double TotalSupply { get; set; }
-
         [JsonProperty("infinite_supply")]
         public bool InfiniteSupply { get; set; }
 
