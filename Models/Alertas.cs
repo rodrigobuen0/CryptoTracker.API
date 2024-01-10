@@ -13,8 +13,8 @@ namespace CryptoTracker.API.Models
         public int AssetId { get; set; }
         public string UserId { get; set; }
         [ForeignKey("UserId")]
-        public ApplicationUser Usuario { get; set; }
+        public ApplicationUser? Usuario { get; set; }
         [ForeignKey("AssetId")]
-        public Ativos Ativos { get; set; }
+        public Ativos? Ativos { get; set; }
     }
 }

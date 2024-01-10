@@ -30,6 +30,7 @@ builder.Services.AddStackExchangeRedisCache(redis =>
 
 builder.Services.AddScoped<ITransacoesService, TransacoesService>();
 builder.Services.AddScoped<IPrecosService, PrecosService>();
+builder.Services.AddScoped<IAlertasService, AlertasService>();
 builder.Services.AddSingleton<ICacheService, CacheService>();
 
 // Entity Framework
