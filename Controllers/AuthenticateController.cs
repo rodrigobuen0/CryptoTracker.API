@@ -65,7 +65,9 @@ namespace CryptoTracker.API.Controllers
                 {
                     Token = new JwtSecurityTokenHandler().WriteToken(token),
                     RefreshToken = refreshToken,
-                    Expiration = token.ValidTo
+                    Expiration = token.ValidTo,
+                    Username = user.UserName,
+                    Email = user.Email,
                 });
             }
             return Unauthorized();
