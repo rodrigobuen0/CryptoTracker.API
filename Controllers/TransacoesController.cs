@@ -61,6 +61,27 @@ namespace CryptoTracker.API.Controllers
             }
         }
 
+        [HttpGet("asset/{assetId}")]
+        public async Task<ActionResult<List<Transacoes>>> GetTransacoesByAssetId(int assetId)
+        {
+
+            try
+            {
+                var userId = User.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized("Usuário não autorizado");
+                }
+                var transacoes = await _transacoesService.GetTransacoesByAssetIdAsync(assetId, userId);
+                return Ok(transacoes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao obter transações: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateTransacao([FromBody] TransacoesDto transacaoDto)
         {

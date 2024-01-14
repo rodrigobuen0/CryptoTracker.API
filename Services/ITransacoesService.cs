@@ -10,10 +10,11 @@ namespace CryptoTracker.API.Services
     public interface ITransacoesService
     {
         Task<List<Transacoes>> GetAllTransacoesAsync(string userId);
-        Task<Transacoes> GetTransacaoByIdAsync(int transacaoId, string userId); // Adicionado o userId
-        Task CreateTransacaoAsync(Transacoes transacao, string userId); // Adicionado o userId
-        Task UpdateTransacaoAsync(int transacaoId, Transacoes transacao, string userId); // Adicionado o userId
-        Task DeleteTransacaoAsync(int transacaoId, string userId); // Adicionado o userId
+        Task<Transacoes> GetTransacaoByIdAsync(int transacaoId, string userId);
+        Task<List<Transacoes>> GetTransacoesByAssetIdAsync(int assetId, string userId);
+        Task CreateTransacaoAsync(Transacoes transacao, string userId);
+        Task UpdateTransacaoAsync(int transacaoId, Transacoes transacao, string userId);
+        Task DeleteTransacaoAsync(int transacaoId, string userId);
     }
 
     public class TransacoesService : ITransacoesService
@@ -32,18 +33,18 @@ namespace CryptoTracker.API.Services
             .ToListAsync();
         }
 
-        public async Task<List<Transacoes>> GetTransacoesDoUsuarioAsync(string userId)
-        {
-            return await _context.Transacoes
-                .Where(t => t.UserID == userId)
-                .ToListAsync();
-        }
-
         public async Task<Transacoes> GetTransacaoByIdAsync(int transacaoId, string userId)
         {
             return await _context.Transacoes
                 .Where(t => t.TransactionID == transacaoId && t.UserID == userId)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Transacoes>> GetTransacoesByAssetIdAsync(int assetId, string userId)
+        {
+            return await _context.Transacoes
+                .Where(t => t.AssetID == assetId && t.UserID == userId).Include(t => t.Ativos)
+                .ToListAsync();
         }
 
         public async Task CreateTransacaoAsync(Transacoes transacao, string userId)
