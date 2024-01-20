@@ -13,7 +13,8 @@ namespace CryptoTracker.API.Models
         public decimal QuantidadeTotal { get; set; }
         [Column(TypeName = "decimal(18,10)")]
         public decimal ValorMedio { get; set; }
-
+        [Column(TypeName = "decimal(18,10)")]
+        public decimal CustoTotal { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser Usuario { get; set; }
         [ForeignKey("AssetID")]

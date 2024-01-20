@@ -52,7 +52,7 @@ namespace CryptoTracker.API.Services
             var portfolio = await _context.Portfolio.Where(p => p.AssetID == transacao.AssetID).FirstOrDefaultAsync();
             if (portfolio == null)
             {
-                var newPortfolio = new Portfolio { AssetID = transacao.AssetID, QuantidadeTotal = 0, ValorMedio = 0, UserID = userId };
+                var newPortfolio = new Portfolio { AssetID = transacao.AssetID, QuantidadeTotal = 0, ValorMedio = 0, UserID = userId, CustoTotal = 0};
                 _context.Portfolio.Add(newPortfolio);
                 await _context.SaveChangesAsync();
                 transacao.PortfolioID = newPortfolio.PortfolioID;
@@ -69,6 +69,7 @@ namespace CryptoTracker.API.Services
 
             var calculoVlrMedioQtdTotal = await CalcularValorMedioQtdTotal(transacao.AssetID, userId);
             portfolio.ValorMedio = calculoVlrMedioQtdTotal.ValorMedio;
+            portfolio.CustoTotal += transacao.Custo;
             portfolio.QuantidadeTotal = calculoVlrMedioQtdTotal.QuantidadeTotal;
 
             _context.Update(portfolio);
@@ -88,6 +89,8 @@ namespace CryptoTracker.API.Services
 
             var calculoVlrMedioQtdTotal = await CalcularValorMedioQtdTotal(transacao.AssetID, userId);
             portfolio.ValorMedio = calculoVlrMedioQtdTotal.ValorMedio;
+            portfolio.CustoTotal -= existingTransacao.Custo;
+            portfolio.CustoTotal += transacao.Custo;
             portfolio.QuantidadeTotal = calculoVlrMedioQtdTotal.QuantidadeTotal;
             _context.Update(portfolio);
 

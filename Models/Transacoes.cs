@@ -18,6 +18,8 @@ namespace CryptoTracker.API.Models
         public decimal PrecoPorUnidade { get; set; }
         [Column(TypeName = "decimal(18,10)")]
         public decimal Taxa { get; set; }
+        [Column(TypeName = "decimal(18,10)")]
+        public decimal Custo { get; set; }
         public DateTime DataTransacao { get; set; }
 
         [ForeignKey("UserID")]
