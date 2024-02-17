@@ -95,12 +95,40 @@ namespace CryptoTracker.API.Controllers
                     Tipo = transacaoDto.Tipo,
                     Quantidade = transacaoDto.Quantidade,
                     PrecoPorUnidade = transacaoDto.PrecoPorUnidade,
+                    Custo = transacaoDto.Custo,
                     Taxa = transacaoDto.Taxa,
                     DataTransacao = transacaoDto.DataTransacao,
                 };
 
                 var userId = User.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
                 await _transacoesService.CreateTransacaoAsync(transacao, userId);
+                return CreatedAtAction(nameof(GetTransacaoById), new { transacaoId = transacao.TransactionID }, transacao);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao criar transação: {ex.Message}");
+            }
+        }
+        [HttpPost("venda")]
+        public async Task<ActionResult> CreateTransacaoVenda([FromBody] TransacoesDto transacaoDto)
+        {
+            try
+            {
+                var transacao = new Transacoes
+                {
+                    TransactionID = transacaoDto.TransactionID,
+                    PortfolioID = transacaoDto.PortfolioID,
+                    AssetID = transacaoDto.AssetID,
+                    Tipo = transacaoDto.Tipo,
+                    Quantidade = transacaoDto.Quantidade,
+                    PrecoPorUnidade = transacaoDto.PrecoPorUnidade,
+                    Custo = transacaoDto.Custo,
+                    Taxa = transacaoDto.Taxa,
+                    DataTransacao = transacaoDto.DataTransacao,
+                };
+
+                var userId = User.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+                await _transacoesService.CreateTransacaoVendaAsync(transacao, userId);
                 return CreatedAtAction(nameof(GetTransacaoById), new { transacaoId = transacao.TransactionID }, transacao);
             }
             catch (Exception ex)

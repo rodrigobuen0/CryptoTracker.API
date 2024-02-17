@@ -10,6 +10,7 @@ namespace CryptoTracker.API.Services
     {
         Task<List<AssetsData>> GetPrecosMeusAssets(string userId);
         Task<List<AssetsData>> GetPrecosPesquisa(string asset, string userId);
+        Task<AssetsData> GetPrecoAsset(int assetId);
 
     }
 
@@ -85,6 +86,33 @@ namespace CryptoTracker.API.Services
                     .ToList();
 
                 return assets;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao obter preços de ativos.", ex);
+            }
+        }
+        public async Task<AssetsData> GetPrecoAsset(int assetId)
+        {
+            try
+            {
+                var assetsPrices = await _cacheService.Get("PortfolioAssetsPrices");
+
+                if (string.IsNullOrEmpty(assetsPrices))
+                {
+                    throw new Exception("O cache de preços de ativos está vazio.");
+                }
+
+                var assetsPricesDeserialized = JsonConvert.DeserializeObject<AssetsPrices>(assetsPrices);
+                if (assetsPricesDeserialized == null)
+                {
+                    throw new Exception("Falha na desserialização do cache de preços de ativos.");
+                }
+                AssetsData asset = assetsPricesDeserialized.Data
+                    .Where(a => a.Id == assetId)
+                    .FirstOrDefault();
+
+                return asset;
             }
             catch (Exception ex)
             {

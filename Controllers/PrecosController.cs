@@ -64,5 +64,25 @@ namespace CryptoTracker.API.Controllers
                 return BadRequest($"Erro ao obter preços: {ex.Message}");
             }
         }
+        [HttpGet("asset/{assetId}")]
+        public async Task<ActionResult<List<AssetsData>>> GetPrecoAsset(int assetId)
+        {
+            try
+            {
+                var userId = User.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized("Usuário não autorizado");
+                }
+                var precosAssets = await _precosService.GetPrecoAsset(assetId);
+
+                return Ok(precosAssets);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao obter preços: {ex.Message}");
+            }
+        }
     }
 }
